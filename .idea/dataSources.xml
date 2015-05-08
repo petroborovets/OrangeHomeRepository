@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1327788515">
+  <component name="DataSourceManagerImpl" format="xml" hash="2055303952">
     <data-source source="LOCAL" name="OrangeHome MySQL" uuid="a35220d7-66a3-4bea-8ac5-1dbe2c75a585">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
