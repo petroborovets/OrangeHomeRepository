@@ -6,5 +6,8 @@
     <session-factory>
         <mapping class="com.boro.orange.entity.User" />
         <mapping class="com.boro.orange.entity.SecurityRole" />
+        <mapping class="com.boro.orange.entity.crawler.Email"/>
+        <mapping class="com.boro.orange.entity.crawler.EmailType"/>
+        <mapping class="com.boro.orange.entity.crawler.EmailContext"/>
     </session-factory>
 </hibernate-configuration>

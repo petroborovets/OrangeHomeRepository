@@ -1,5 +1,6 @@
 package com.boro.orange.entity;
 
+import com.boro.orange.entity.crawler.EmailType;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
@@ -11,17 +12,23 @@ import java.util.Set;
 @Entity
 @Table(name = "USERS")
 public class User {
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "EMAIL", nullable = false, length = 50)
     private String email;
+    @Column(name = "FIRST_NAME", nullable = false, length = 50)
     private String firstName;
+    @Column(name = "LAST_NAME", nullable = false, length = 50)
     private String lastName;
+    @Column(name = "PASSWORD", nullable = false, length = 50)
     private String password;
-    private Boolean isBlocked = false;
+
+    @JoinTable(name = "USER2SECURITY_ROLES", joinColumns = {@JoinColumn(name = "USER_FK")}, inverseJoinColumns = {@JoinColumn(name = "SECURITY_ROLE_FK")})
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<SecurityRole> roles;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     public Long getId() {
         return id;
     }
@@ -34,7 +41,6 @@ public class User {
         return firstName;
     }
 
-    @Required
     public void setFirstName(String username) {
         this.firstName = username;
     }
@@ -55,7 +61,6 @@ public class User {
         this.password = password;
     }
 
-    @Required
     public String getEmail() {
         return email;
     }
@@ -64,8 +69,6 @@ public class User {
         this.email = email;
     }
 
-    @JoinTable(name = "USER2SECURITY_ROLE", joinColumns = {@JoinColumn(name = "USER_FK")}, inverseJoinColumns = {@JoinColumn(name = "SECURITY_ROLE_FK")})
-    @ManyToMany(fetch = FetchType.EAGER)
     public Set<SecurityRole> getRoles() {
         return roles;
     }
@@ -73,5 +76,4 @@ public class User {
     public void setRoles(Set<SecurityRole> roles) {
         this.roles = roles;
     }
-
 }

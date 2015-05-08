@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "SECURITY_ROLE")
+@Table(name = "SECURITY_ROLES")
 public class SecurityRole {
     private Long id;
     private String name;

@@ -14,4 +14,9 @@
         <put-attribute name="body" value="/WEB-INF/views/home.jsp"/>
     </definition>
 
+    <definition name="loginForm" extends="common">
+        <put-attribute name="title" value="Log In" />
+        <put-attribute name="body" value="/WEB-INF/views/loginForm.jsp"/>
+    </definition>
+
 </tiles-definitions>

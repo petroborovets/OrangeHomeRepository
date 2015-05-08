@@ -1,5 +1,6 @@
-package com.boro.orange.dao;
+package com.boro.orange.dao.implementation;
 
+import com.boro.orange.dao.ElementDAO;
 import com.boro.orange.exception.NonUniqueElementException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by petroborovets on 4/8/15.
  */
-abstract class ElementDAOImpl<E> implements ElementDAO<E> {
+public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
     private Class<E> elementClass;
     @Autowired
     protected SessionFactory sessionFactory;
