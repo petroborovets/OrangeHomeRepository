@@ -2,6 +2,8 @@ package com.boro.orange.dao.implementation;
 
 import com.boro.orange.dao.ElementDAO;
 import com.boro.orange.exception.NonUniqueElementException;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,7 @@ public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
 
     public void addElement(E element) throws NonUniqueElementException {
         Session session = sessionFactory.getCurrentSession();
-        checkForUnique(element, session);
-        session.save(element);
+        session.save(checkForUnique(element, session));
     }
 
     public void updateElement(E element) throws NonUniqueElementException {
@@ -50,5 +51,11 @@ public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
     public E getElementByID(Long elementId) {
         return (E) sessionFactory.getCurrentSession().get(elementClass,
                 elementId);
+    }
+
+    public E getElementByQuery(String quety) {
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(quety).addEntity(elementClass);
+        query.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        return (E) query.list().get(0);
     }
 }

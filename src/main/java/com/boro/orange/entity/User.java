@@ -1,9 +1,9 @@
 package com.boro.orange.entity;
 
-import com.boro.orange.entity.crawler.EmailType;
-import org.springframework.beans.factory.annotation.Required;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -16,14 +16,20 @@ public class User {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "EMAIL", nullable = false, length = 50)
+    @Column(name = "EMAIL", nullable = false, length = 50, unique = true)
     private String email;
     @Column(name = "FIRST_NAME", nullable = false, length = 50)
     private String firstName;
     @Column(name = "LAST_NAME", nullable = false, length = 50)
     private String lastName;
-    @Column(name = "PASSWORD", nullable = false, length = 50)
+    @Column(name = "PASSWORD", nullable = false, length = 60)
     private String password;
+    @Column(name = "CREATE_DATE", nullable = false)
+    private Date createDate;
+
+    public User() {
+        createDate = new Date();
+    }
 
     @JoinTable(name = "USER2SECURITY_ROLES", joinColumns = {@JoinColumn(name = "USER_FK")}, inverseJoinColumns = {@JoinColumn(name = "SECURITY_ROLE_FK")})
     @ManyToMany(fetch = FetchType.EAGER)
@@ -76,4 +82,13 @@ public class User {
     public void setRoles(Set<SecurityRole> roles) {
         this.roles = roles;
     }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
 }

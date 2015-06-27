@@ -6,17 +6,39 @@
 
     <definition name="common" template="/WEB-INF/layout/classic.jsp">
         <put-attribute name="navBar" value="/WEB-INF/layout/navBar.jsp"/>
+        <put-attribute name="sideBar" value="/WEB-INF/layout/sideBar.jsp"/>
         <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp"/>
     </definition>
+    <definition name="loginOrRegistrationDefinition" template="/WEB-INF/layout/loginTemplate.jsp"/>
 
     <definition name="home" extends="common">
         <put-attribute name="title" value="Orange Home" />
         <put-attribute name="body" value="/WEB-INF/views/home.jsp"/>
     </definition>
 
-    <definition name="loginForm" extends="common">
+    <definition name="weather" extends="common">
+        <put-attribute name="title" value="Weather Statistics" />
+        <put-attribute name="body" value="/WEB-INF/views/weather.jsp"/>
+    </definition>
+
+    <definition name="loginForm" extends="loginOrRegistrationDefinition">
         <put-attribute name="title" value="Log In" />
         <put-attribute name="body" value="/WEB-INF/views/loginForm.jsp"/>
+    </definition>
+
+    <definition name="registration" extends="loginOrRegistrationDefinition">
+        <put-attribute name="title" value="Register" />
+        <put-attribute name="body" value="/WEB-INF/views/registration.jsp"/>
+    </definition>
+
+    <definition name="accessDenied" extends="loginOrRegistrationDefinition">
+        <put-attribute name="title" value="Access Denied" />
+        <put-attribute name="body" value="/WEB-INF/views/accessDenied.jsp"/>
+    </definition>
+
+    <definition name="userProfile" extends="common">
+        <put-attribute name="title" value="UserProfile" />
+        <put-attribute name="body" value="/WEB-INF/views/userProfile.jsp"/>
     </definition>
 
 </tiles-definitions>

@@ -23,4 +23,6 @@ public interface ElementDAO<E> {
     E getElementByID(Long elementId);
 
     E checkForUnique(E element, Session session) throws NonUniqueElementException;
+
+    E getElementByQuery(String quety);
 }
