@@ -1,6 +1,6 @@
-package com.boro.orange.dao;
+package com.boro.black.dao;
 
-import com.boro.orange.exception.NonUniqueElementException;
+import com.boro.black.exception.NonUniqueElementException;
 import org.hibernate.Session;
 
 import java.util.List;

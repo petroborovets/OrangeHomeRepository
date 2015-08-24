@@ -1,6 +1,4 @@
-package com.boro.orange.entity;
-
-import org.hibernate.annotations.CreationTimestamp;
+package com.boro.black.entity;
 
 import javax.persistence.*;
 import java.util.Date;

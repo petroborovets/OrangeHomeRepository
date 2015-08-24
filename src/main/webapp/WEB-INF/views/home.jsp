@@ -9,7 +9,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Black Widow home
+            Black Widow <small>home page</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href='<c:url value="/" />'><i class="fa fa-dashboard"></i> Home</a></li>
@@ -23,7 +23,7 @@
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3><c:out value="${companiesSavedCount}"/></h3>
                         <p>Companies</p>
                     </div>
                     <div class="icon">
@@ -36,7 +36,7 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>53</h3>
+                        <h3><c:out value="${emailsSavedCount}"/></h3>
                         <p>Emails</p>
                     </div>
                     <div class="icon">
@@ -49,7 +49,7 @@
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3><c:out value="${usersRegisteredCount}"/></h3>
                         <p>User Registrations</p>
                     </div>
                     <div class="icon">

@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="BlackWidow" />
         <module name="OrangeHome" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="BlackWidow" target="1.5" />
       <module name="OrangeHome" target="1.5" />
     </bytecodeTargetLevel>
   </component>

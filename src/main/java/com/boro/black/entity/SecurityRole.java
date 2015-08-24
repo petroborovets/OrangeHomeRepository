@@ -1,4 +1,4 @@
-package com.boro.orange.entity;
+package com.boro.black.entity;
 
 import javax.persistence.*;
 

@@ -1,26 +1,21 @@
-package com.boro.orange.controller;
+package com.boro.black.controller;
 
-import com.boro.orange.component.ModelUtil;
-import com.boro.orange.component.validation.RegistrationValidation;
-import com.boro.orange.dao.implementation.UserDAO;
-import com.boro.orange.dto.UserDTO;
-import com.boro.orange.entity.GismeteoData;
-import com.boro.orange.entity.SecurityRole;
-import com.boro.orange.entity.User;
-import com.boro.orange.entity.crawler.Email;
-import com.boro.orange.entity.crawler.EmailContext;
-import com.boro.orange.exception.NonUniqueElementException;
-import com.boro.orange.service.SecurityRoleService;
-import com.boro.orange.service.UserService;
-import com.boro.orange.service.crawler.EmailService;
-import com.boro.orange.utils.GismeteoUtil;
-import com.boro.orange.utils.StaticValuesUtil;
+import com.boro.black.component.ModelUtil;
+import com.boro.black.component.validation.RegistrationValidation;
+import com.boro.black.dto.UserDTO;
+import com.boro.black.entity.SecurityRole;
+import com.boro.black.entity.User;
+import com.boro.black.exception.NonUniqueElementException;
+import com.boro.black.service.SecurityRoleService;
+import com.boro.black.service.UserService;
+import com.boro.black.service.crawler.CompanyService;
+import com.boro.black.service.crawler.EmailService;
+import com.boro.black.utils.StaticValuesUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -29,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,9 +37,11 @@ public class HomeController {
     @Autowired
     UserService userService;
     @Autowired
-    EmailService emailService;
-    @Autowired
     SecurityRoleService securityRoleService;
+    @Autowired
+    CompanyService companyService;
+    @Autowired
+    EmailService emailService;
     @Autowired
     ModelUtil modelUtil;
 
@@ -56,6 +51,15 @@ public class HomeController {
     public String home(ModelMap model) {
 
         log.info("Loading home.jsp");
+
+        int companiesSavedCount = companyService.getAllElements().size();
+        int emailsSavedCount = emailService.getAllElements().size();
+        int usersRegisteredCount = userService.getAllElements().size();
+
+        model.addAttribute("companiesSavedCount", companiesSavedCount);
+        model.addAttribute("emailsSavedCount", emailsSavedCount);
+        model.addAttribute("usersRegisteredCount", usersRegisteredCount);
+
         modelUtil.warp(model);
 
         return "home";

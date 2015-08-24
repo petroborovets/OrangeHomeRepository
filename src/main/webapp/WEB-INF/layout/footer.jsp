@@ -13,5 +13,5 @@
         Black Widow
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2015 <a href="#">OrangeHome</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2015 <a href="#">BlackWidow</a>.</strong> All rights reserved.
 </footer>

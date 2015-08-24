@@ -1,4 +1,4 @@
-package com.boro.orange.exception;
+package com.boro.black.exception;
 
 /**
  * Created by petroborovets on 4/8/15.

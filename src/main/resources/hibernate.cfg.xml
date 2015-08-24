@@ -4,12 +4,13 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <mapping class="com.boro.orange.entity.User"/>
-        <mapping class="com.boro.orange.entity.SecurityRole"/>
-        <mapping class="com.boro.orange.entity.crawler.Email"/>
-        <mapping class="com.boro.orange.entity.crawler.Company"/>
-        <mapping class="com.boro.orange.entity.crawler.EmailType"/>
-        <mapping class="com.boro.orange.entity.crawler.EmailContext"/>
-        <mapping class="com.boro.orange.entity.GismeteoData"/>
+        <mapping class="com.boro.black.entity.User"/>
+        <mapping class="com.boro.black.entity.SecurityRole"/>
+        <mapping class="com.boro.black.entity.crawler.Email"/>
+        <mapping class="com.boro.black.entity.crawler.Company"/>
+        <mapping class="com.boro.black.entity.crawler.EmailType"/>
+        <mapping class="com.boro.black.entity.crawler.EmailContext"/>
+        <mapping class="com.boro.black.entity.crawler.SpiderTask"/>
+        <mapping class="com.boro.black.entity.GismeteoData"/>
     </session-factory>
 </hibernate-configuration>

@@ -1,14 +1,12 @@
-package com.boro.orange.dao.implementation;
+package com.boro.black.dao.implementation;
 
-import com.boro.orange.dao.implementation.ElementDAOImpl;
-import com.boro.orange.entity.User;
-import com.boro.orange.exception.NonUniqueElementException;
+import com.boro.black.entity.User;
+import com.boro.black.exception.NonUniqueElementException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Hashtable;
 import java.util.List;
 
 /**

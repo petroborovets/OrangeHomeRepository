@@ -41,4 +41,9 @@
         <put-attribute name="body" value="/WEB-INF/views/userProfile.jsp"/>
     </definition>
 
+    <definition name="spider" extends="common">
+        <put-attribute name="title" value="Spider" />
+        <put-attribute name="body" value="/WEB-INF/views/spider.jsp"/>
+    </definition>
+
 </tiles-definitions>

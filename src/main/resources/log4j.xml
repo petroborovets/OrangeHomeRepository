@@ -61,19 +61,19 @@
     </logger>
 
     <!-- 3rdparty Loggers -->
-    <logger name="com.boro.orange.entity">
+    <logger name="com.boro.black.entity">
         <level value="info" />
     </logger>
 
-    <logger name="com.boro.orange.dao">
+    <logger name="com.boro.black.dao">
         <level value="info" />
     </logger>
 
-    <logger name="com.boro.orange.service">
+    <logger name="com.boro.black.service">
         <level value="info" />
     </logger>
 
-    <logger name="com.boro.orange.controller">
+    <logger name="com.boro.black.controller">
         <level value="info" />
     </logger>
 

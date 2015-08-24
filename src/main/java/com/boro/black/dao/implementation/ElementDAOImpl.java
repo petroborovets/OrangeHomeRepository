@@ -1,7 +1,7 @@
-package com.boro.orange.dao.implementation;
+package com.boro.black.dao.implementation;
 
-import com.boro.orange.dao.ElementDAO;
-import com.boro.orange.exception.NonUniqueElementException;
+import com.boro.black.dao.ElementDAO;
+import com.boro.black.exception.NonUniqueElementException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
