@@ -10,9 +10,12 @@
     <table name="COMPANIES" schema="" catalog="OrangeHome" type="TABLE">
       <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
       <column name="DOMAIN_URL" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="SPIDER_TASK_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_9j0jguu6dor4u6fjxk38cysp3" columns="SPIDER_TASK_FK" ref-table="SPIDER_TASKS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="FK_88uu73eu3j7rqdpxsb2x6sfmq" table="EMAILS" schema="" catalog="OrangeHome" columns="COMPANY_FK"/>
       <index name="UK_s83bxkl0pxl2elkb0jpyyrsil" unique="true" columns="DOMAIN_URL"/>
+      <index name="FK_9j0jguu6dor4u6fjxk38cysp3" unique="false" columns="SPIDER_TASK_FK"/>
     </table>
     <table name="EMAILS" schema="" catalog="OrangeHome" type="TABLE">
       <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
@@ -20,6 +23,7 @@
       <column name="URL" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="COMPANY_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="EMAIL_TYPE_FK" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="CREATE_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_88uu73eu3j7rqdpxsb2x6sfmq" columns="COMPANY_FK" ref-table="COMPANIES" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_g5cpwtffflw1wu2rb8vm66q1f" columns="EMAIL_TYPE_FK" ref-table="EMAIL_TYPE" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
@@ -66,6 +70,16 @@
       <column name="NAME" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <exported-key name="FK_4miq23h2ebmstfokdtjqbd9ec" table="USER2SECURITY_ROLES" schema="" catalog="OrangeHome" columns="SECURITY_ROLE_FK"/>
+    </table>
+    <table name="SPIDER_TASKS" schema="" catalog="OrangeHome" type="TABLE">
+      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="CREATE_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="DESCRIPTION" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="FINISH_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="PROGRESS" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <exported-key name="FK_9j0jguu6dor4u6fjxk38cysp3" table="COMPANIES" schema="" catalog="OrangeHome" columns="SPIDER_TASK_FK"/>
     </table>
     <table name="USER2SECURITY_ROLES" schema="" catalog="OrangeHome" type="TABLE">
       <column name="USER_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
