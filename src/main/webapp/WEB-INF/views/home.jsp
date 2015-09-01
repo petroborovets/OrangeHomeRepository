@@ -14,6 +14,26 @@
         <ol class="breadcrumb">
             <li><a href='<c:url value="/" />'><i class="fa fa-dashboard"></i> Home</a></li>
         </ol>
+        <c:if test="${not empty successMessage}">
+            <div class="alert alert-success">
+                <strong>Success!</strong> ${successMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty infoMessage}">
+            <div class="alert alert-info">
+                <strong>Info!</strong> ${infoMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty warningMessage}">
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> ${warningMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger">
+                <strong>Error!</strong> ${errorMessage}
+            </div>
+        </c:if>
     </section>
 
     <!-- Main content -->

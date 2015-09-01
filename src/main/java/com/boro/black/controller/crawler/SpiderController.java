@@ -2,16 +2,16 @@ package com.boro.black.controller.crawler;
 
 import com.boro.black.component.ModelUtil;
 import com.boro.black.dto.GismeteoDataDTO;
-import com.boro.black.entity.GismeteoData;
 import org.apache.log4j.Logger;
-import org.hibernate.validator.internal.constraintvalidators.URLValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by petroborovets on 7/15/15.
@@ -37,10 +37,7 @@ public class SpiderController {
         log.info("Loading spider.jsp");
         modelUtil.warp(model);
 
-        URLValidator urlValidator = new URLValidator();
-
-
-        model.addAttribute("errorMessage", "Error.");
+        //TODO start crawler using url
 
         return "spider";
     }

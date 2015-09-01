@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -23,6 +22,26 @@
             <li><a href='<c:url value="/" />'><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Spider</li>
         </ol>
+        <c:if test="${not empty successMessage}">
+            <div class="alert alert-success">
+                <strong>Success!</strong> ${successMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty infoMessage}">
+            <div class="alert alert-info">
+                <strong>Info!</strong> ${infoMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty warningMessage}">
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> ${warningMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger">
+                <strong>Error!</strong> ${errorMessage}
+            </div>
+        </c:if>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -46,14 +65,17 @@
                             <div>
                                 <div class="box-body">
                                     <div class="form-group">
-                                        <label >Company URL <span class="text-red">*</span></label>
-                                        <input type="companyURL" class="form-control" id="companyURL" placeholder="Enter company URL">
+                                        <label>Company URL <span class="text-red">*</span></label>
+                                        <input type="companyURL" class="form-control" id="companyURL"
+                                               placeholder="Enter company URL">
                                     </div>
-                                </div><!-- /.box-body -->
+                                </div>
+                                <!-- /.box-body -->
 
                                 <div class="box-footer">
                                     <button id="startSpiderByCompanyURL" class="btn btn-primary">Submit</button>
-                                    <span id="spanWrongURL" class="text-red" style="display: none"> URL is not valid.</span>
+                                    <span id="spanWrongURL" class="text-red"
+                                          style="display: none"> URL is not valid.</span>
                                     <!--c:if test="">
                                         <span id="spanWrongURL" class="text-red" style="display: none"> ${errorMessage}</span>
                                     -->
@@ -91,7 +113,7 @@
         </div>
     </section>
 </div>
-<spring:url value="/spiderByURL" var="ajaxURL" />
+<spring:url value="/spiderByURL" var="ajaxURL"/>
 <!-- Activate sidebar tab -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script>
@@ -100,7 +122,7 @@
     });
     $("#startSpiderByCompanyURL").bind("click", function () {
         var companyURL = $("#companyURL").val();
-        if(isValidURL(companyURL)){
+        if (isValidURL(companyURL)) {
             var ajaxUrl = "${ajaxURL}";
             $.ajax({
                 type: 'POST',
@@ -108,7 +130,7 @@
                 data: {
                     'url': companyURL
                 },
-                success: function(result){
+                success: function (result) {
                     alert("Response received.");
                 }
             });

@@ -27,6 +27,13 @@
                 <c:out value="${errorMessage}"/>
             </div>
         </c:if>
+        <c:if test="${not empty successMessage}">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-user-plus"></i> Success</h4>
+                <c:out value="${successMessage}"/>
+            </div>
+        </c:if>
         <form:form action="/login" method="post">
             <div class="form-group has-feedback">
                 <input id="username" name="username" type="email" class="form-control" placeholder="Email" spellcheck="false"/>

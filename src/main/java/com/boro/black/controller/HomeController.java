@@ -34,18 +34,35 @@ import java.util.Set;
 @RequestMapping("/")
 public class HomeController {
 
+    /**
+     * User service, implements Users CRUD
+     */
     @Autowired
     UserService userService;
+    /**
+     * SecurityRoleService service, implements Users security role CRUD
+     */
     @Autowired
     SecurityRoleService securityRoleService;
+    /**
+     * CompanyService service, implements company CRUD
+     */
     @Autowired
     CompanyService companyService;
+    /**
+     * EmailService service, implements email CRUD
+     */
     @Autowired
     EmailService emailService;
+    /**
+     * ModelUtil utility class to wrap model
+     */
     @Autowired
     ModelUtil modelUtil;
 
-    static Logger log = Logger.getLogger(HomeController.class.getName());
+    private static Logger log = Logger.getLogger(HomeController.class.getName());
+
+    private static final String USER_REGISTRATION_SUCCESS = "Registration done! Welcome to Black Widow.";
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(ModelMap model) {
@@ -169,7 +186,10 @@ public class HomeController {
 
         modelUtil.warp(model);
         log.info("New User [" + userToRegister + "] created");
-        return "home";
+
+        model.addAttribute("successMessage", USER_REGISTRATION_SUCCESS);
+
+        return "loginForm";
     }
 
 }
