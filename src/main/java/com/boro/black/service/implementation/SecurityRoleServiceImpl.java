@@ -24,7 +24,11 @@ public class SecurityRoleServiceImpl implements SecurityRoleService {
         securityRoleDAO.addElement(element);
     }
 
-    public void updateElement(SecurityRole element) throws NonUniqueElementException {
+    public void addAllElements(List<SecurityRole> element) throws NonUniqueElementException {
+        securityRoleDAO.addAllElements(element);
+    }
+
+    public void updateElement(SecurityRole element) {
         securityRoleDAO.updateElement(element);
     }
 

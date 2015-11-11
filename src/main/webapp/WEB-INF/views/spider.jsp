@@ -68,6 +68,14 @@
                                         <label>Company URL <span class="text-red">*</span></label>
                                         <input type="companyURL" class="form-control" id="companyURL"
                                                placeholder="Enter company URL">
+                                        <div class="form-group">
+                                            <label>Select crawling time</label>
+                                            <select id="crawlingTime" class="form-control">
+                                                <option value="20">Quick (20 min)</option>
+                                                <option value="60">Normal (Hour)</option>
+                                                <option value="300">High quality (5 hours)</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -76,15 +84,8 @@
                                     <button id="startSpiderByCompanyURL" class="btn btn-primary">Submit</button>
                                     <span id="spanWrongURL" class="text-red"
                                           style="display: none"> URL is not valid.</span>
-                                    <!--c:if test="">
-                                        <span id="spanWrongURL" class="text-red" style="display: none"> ${errorMessage}</span>
-                                    -->
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.tab-pane -->
-                        <div class="tab-pane" id="tab_2">
-
                         </div>
                     </div>
                     <!-- /.tab-content -->
@@ -94,17 +95,16 @@
                 <table id="entityTable" data-toggle="table" data-pagination="true"
                        data-id-field="id" data-show-refresh="true" data-sort-order="desc" data-sort-name="createDate"
                        data-page-list="[10, 20, 50, 100, 1000]"
-                       data-url="<spring:url value="${contextPath}/"/>">
+                       data-url="<spring:url value="${contextPath}/spider/info"/>">
                     <thead>
                     <tr>
                         <th data-width="10" data-field="id" data-sortable="true">#</th>
-                        <th data-width="10" data-field="taskName" data-switchable="false"
+                        <th data-width="10" data-field="name" data-switchable="false"
                             data-sortable="true">Task name
                         </th>
-                        <th data-width="10" data-field="compaies" data-sortable="true">Company(s)</th>
-                        <th data-width="10" data-field="emailsFound" data-sortable="true">Emails found</th>
+                        <th data-width="10" data-field="numberOfEmails" data-sortable="true">Emails found</th>
                         <th data-width="10" data-field="progress" data-sortable="true">Progress</th>
-                        <th data-field="createDate" data-sortable="true">Time started</th>
+                        <th data-field="startDate" data-sortable="true">Time started</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -122,26 +122,28 @@
     });
     $("#startSpiderByCompanyURL").bind("click", function () {
         var companyURL = $("#companyURL").val();
+        var crawlingTime = $( "#crawlingTime" ).val();
         if (isValidURL(companyURL)) {
             var ajaxUrl = "${ajaxURL}";
             $.ajax({
                 type: 'POST',
                 url: ajaxUrl,
                 data: {
-                    'url': companyURL
-                },
-                success: function (result) {
-                    alert("Response received.");
+                    'url': companyURL,
+                    'crawlingTime' : crawlingTime
                 }
             });
-            alert("Request sent.");
+            setTimeout(function (){
+                alert("YES");
+                $('button[name="refresh"]').click()
+            }, 5000);
         } else {
             $("#spanWrongURL").show();
         }
     });
     function isValidURL(textval) {
         var urlregex = new RegExp(
-                "^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
+                "^(http|https|ftp)\://([a-zA-Zа-яА-Я0-9\.\-]+(\:[a-zA-Zа-яА-Я0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Zа-яА-Я0-9\-]+\.)*[a-zA-Zа-яА-Я0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Zа-яА-Я]{2}))(\:[0-9]+)*(/($|[a-zA-Zа-яА-Я0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
         return urlregex.test(textval);
     }
 </script>

@@ -2,10 +2,8 @@ package com.boro.black.dao.implementation;
 
 import com.boro.black.dao.ElementDAO;
 import com.boro.black.exception.NonUniqueElementException;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.apache.log4j.Logger;
+import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -18,6 +16,9 @@ public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
     @Autowired
     protected SessionFactory sessionFactory;
 
+    static Logger log = Logger.getLogger(ElementDAOImpl.class.getName());
+
+
     public ElementDAOImpl(Class<E> elementClass) {
         this.elementClass = elementClass;
     }
@@ -27,10 +28,25 @@ public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
         session.save(checkForUnique(element, session));
     }
 
-    public void updateElement(E element) throws NonUniqueElementException {
+    public void addAllElements(List<E> elements) throws NonUniqueElementException {
         Session session = sessionFactory.getCurrentSession();
-        E e = checkForUnique(element, session);
-        session.update(e);
+        Transaction tx = session.beginTransaction();
+        for (E element : elements) {
+            try {
+                checkForUnique(element, session);
+            } catch (NonUniqueElementException e) {
+                log.error("Element ["+ element+"] is not unique.");
+                continue;
+            }
+            session.save(element);
+        }
+        tx.commit();
+        session.close();
+    }
+
+    public void updateElement(E element) {
+        Session session = sessionFactory.getCurrentSession();
+        session.update(element);
     }
 
     @SuppressWarnings("unchecked")

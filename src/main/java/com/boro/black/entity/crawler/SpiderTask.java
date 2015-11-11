@@ -1,9 +1,7 @@
 package com.boro.black.entity.crawler;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by petroborovets on 7/16/15.
@@ -11,18 +9,18 @@ import java.util.Set;
 @Entity
 @Table(name = "SPIDER_TASKS")
 public class SpiderTask {
+    public static int IS_RUNNING = 1;
+    public static int IS_FINISHED = 2;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "NAME", nullable = false, length = 50)
+    @Column(name = "NAME", nullable = false, length = 200)
     private String name;
     @Column(name = "DESCRIPTION", nullable = true, length = 300)
     private String description;
-    @OneToMany(mappedBy = "spiderTask", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Company> companies = new HashSet<Company>();
     @Column(name = "PROGRESS", nullable = false)
-    private Integer progress = 0;
+    private Short progress = 1;
     @Column(name = "CREATE_DATE", nullable = false)
     private Date createDate;
     @Column(name = "FINISH_DATE", nullable = true)
@@ -56,22 +54,33 @@ public class SpiderTask {
         this.description = description;
     }
 
-    public Set<Company> getCompany() {
-        return companies;
-    }
-
-    public void setCompany(Set<Company> companies) {
-        this.companies = companies;
-    }
-
-    public Integer getProgress() {
+    public Short getProgress() {
         return progress;
     }
 
-    public void setProgress(Integer progress) {
+    public void setProgress(Short progress) {
         this.progress = progress;
-        if (progress == 2) {
+        if (progress == IS_RUNNING) {
+            createDate = new Date();
+        }
+        if (progress == IS_FINISHED) {
             finishDate = new Date();
         }
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate() {
+        this.finishDate = new Date();
     }
 }

@@ -3,6 +3,7 @@ package com.boro.black.dao.crawler.implementation;
 import com.boro.black.dao.implementation.ElementDAOImpl;
 import com.boro.black.entity.crawler.Company;
 import com.boro.black.entity.crawler.Email;
+import com.boro.black.entity.crawler.SpiderTask;
 import com.boro.black.exception.NonUniqueElementException;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -17,6 +18,9 @@ import java.util.List;
 @Repository("companyDAO")
 public class CompanyDAO extends ElementDAOImpl<Company> {
     static Logger log = Logger.getLogger(CompanyDAO.class.getName());
+    public static final String getCompanyByDomainQuery = "FROM Company WHERE domainUrl = :domain_url";
+    public static final String getCompanyByTaskQuery = "FROM Company WHERE spiderTask = :spider_task";
+
 
     public CompanyDAO() {
         super(Company.class);
@@ -32,7 +36,7 @@ public class CompanyDAO extends ElementDAOImpl<Company> {
         if (companyList.size() == 0) {
             return element;
         } else {
-            String errorMsg = "Email already exists." + element.getDomainUrl();
+            String errorMsg = "Company already exists." + element.getDomainUrl();
             log.error(errorMsg);
             throw new NonUniqueElementException(errorMsg);
         }
@@ -49,10 +53,33 @@ public class CompanyDAO extends ElementDAOImpl<Company> {
         List<Email> companyEmails = query.list();
         if (companyEmails == null) {
             log.error("Failed to get companyEmails using company pk:[" + companyPk + "]");
-        } else if(companyEmails.size() == 0) {
+        } else if (companyEmails.size() == 0) {
             log.warn("No emails found for company with pk:[" + companyPk + "]");
         }
 
         return companyEmails;
+    }
+
+    public Company getCompanyByDomainUrl(String domainUrl) {
+        Company company = null;
+
+        Query query = sessionFactory.getCurrentSession().createQuery(getCompanyByDomainQuery);
+        query.setParameter("domain_url", domainUrl);
+
+        List list = query.list();
+        if (!list.isEmpty())
+            company = (Company) list.get(0);
+
+        return company == null ? new Company() : company;
+    }
+
+    public List<Company> getByTaskId(SpiderTask spiderTask) {
+
+        Query query = sessionFactory.getCurrentSession().createQuery(getCompanyByTaskQuery);
+        query.setParameter("spider_task", spiderTask);
+
+        List<Company> list = query.list();
+
+        return list;
     }
 }

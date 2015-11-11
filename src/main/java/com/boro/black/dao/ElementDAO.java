@@ -12,7 +12,9 @@ public interface ElementDAO<E> {
 
     void addElement(E element) throws NonUniqueElementException;
 
-    void updateElement(E element) throws NonUniqueElementException;
+    void addAllElements(List<E> elements) throws NonUniqueElementException;
+
+    void updateElement(E element);
 
     List<E> getAllElements();
 

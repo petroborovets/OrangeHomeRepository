@@ -33,7 +33,11 @@ public class GismeteoDataServiceImpl implements GismeteoDataService {
         gismeteoDataDAO.addElement(element);
     }
 
-    public void updateElement(GismeteoData element) throws NonUniqueElementException {
+    public void addAllElements(List<GismeteoData> element) throws NonUniqueElementException {
+        gismeteoDataDAO.addAllElements(element);
+    }
+
+    public void updateElement(GismeteoData element) {
         gismeteoDataDAO.updateElement(element);
     }
 

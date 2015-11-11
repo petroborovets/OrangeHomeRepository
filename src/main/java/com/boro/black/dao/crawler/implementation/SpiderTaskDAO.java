@@ -19,6 +19,6 @@ public class SpiderTaskDAO extends ElementDAOImpl<SpiderTask> {
     }
 
     public SpiderTask checkForUnique(SpiderTask element, Session session) throws NonUniqueElementException {
-        return null;
+        return element;
     }
 }

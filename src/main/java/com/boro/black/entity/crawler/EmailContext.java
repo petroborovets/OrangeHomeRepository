@@ -16,7 +16,7 @@ public class EmailContext {
     private String leftContext;
     @Column(name = "RIGHT_CONTEXT", length = 300)
     private String rightContext;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "EMAIL_FK", nullable = false)
     private Email email;
 

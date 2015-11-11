@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface CompanyService extends ElementService<Company> {
     public List<Email> getCompanyEmails(Long companyPk);
+    List<Company> filterCompanies(List<Company> companies);
+    public Company getCompanyByDomain(String domain);
 }

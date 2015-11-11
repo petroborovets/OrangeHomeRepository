@@ -6,12 +6,14 @@ import com.boro.black.entity.crawler.Company;
 import com.boro.black.entity.crawler.Email;
 import com.boro.black.exception.NonUniqueElementException;
 import com.boro.black.service.crawler.CompanyService;
+import com.boro.black.service.crawler.EmailService;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,13 +26,20 @@ public class CompanyServiceImpl implements CompanyService {
     static Logger log = Logger.getLogger(EmailServiceImpl.class.getName());
 
     @Autowired
-    private ElementDAO<Company> companyDAO;
+    private CompanyDAO companyDAO;
+
+    @Autowired
+    private EmailService emailService;
 
     public void addElement(Company element) throws NonUniqueElementException {
         companyDAO.addElement(element);
     }
 
-    public void updateElement(Company element) throws NonUniqueElementException {
+    public void addAllElements(List<Company> element) throws NonUniqueElementException {
+        companyDAO.addAllElements(element);
+    }
+
+    public void updateElement(Company element) {
         companyDAO.updateElement(element);
     }
 
@@ -50,13 +59,67 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDAO.getElementByID(elementId);
     }
 
+    public Company getCompanyByDomain(String domain) {
+        log.info("Get company with by domainUrl [" + domain + "].");
+        return companyDAO.getCompanyByDomainUrl(domain);
+    }
+
     public List<Email> getCompanyEmails(Long companyPk) {
-        log.info("Get company with pk [" + companyPk + " emails.");
-        if(companyDAO instanceof CompanyDAO) {
-            CompanyDAO companyDAOImpl = (CompanyDAO) companyDAO;
-            companyDAOImpl.getCompanyEmails(companyPk);
-        }
+        log.info("Get company with pk [" + companyPk + "] emails.");
+        CompanyDAO companyDAOImpl = (CompanyDAO) companyDAO;
+        companyDAOImpl.getCompanyEmails(companyPk);
+
         log.error("Failed to get company emails.");
         return null;
+    }
+
+    public List<Company> filterCompanies(List<Company> companies) {
+        List<Company> filteredCompanies = new ArrayList<Company>();
+
+        boolean haveToAddToUnique;
+
+        List<Company> companiesToDelete = new ArrayList<Company>();
+
+        //check if list contails null elements (sometimes crawler fills with null)
+        for (Company company : companies) {
+            if (company.getDomainUrl() == null && company.getEmails() == null) {
+                companiesToDelete.add(company);
+            }
+        }
+        companies.removeAll(companiesToDelete);
+
+        for (Company company : companies) {
+            //add to unique if unique is empty
+            if (filteredCompanies.isEmpty()) {
+                if (company.getEmails() != null)
+                    filteredCompanies.add(company);
+                continue;
+            }
+            //if not empty,
+            // 1: if same company exists in unique - group, filter emails and add to existing unique company
+            // 2: if same company doesn't exist in unique - add company
+            haveToAddToUnique = true;
+            for (Company uniqueCompany : filteredCompanies) {
+                if (uniqueCompany.getDomainUrl().equals(company.getDomainUrl())) {
+                    List<Email> emailsGrouped = new ArrayList<Email>();
+
+                    emailsGrouped.addAll(uniqueCompany.getEmails());
+                    emailsGrouped.addAll(company.getEmails());
+
+                    List<Email> uniqueCompanyEmails =
+                            emailService.filterEmails(emailsGrouped);
+
+                    uniqueCompany.setEmails(uniqueCompanyEmails);
+                    haveToAddToUnique = false;
+                    break;
+                }
+            }
+            // 2:
+            if (haveToAddToUnique) {
+                filteredCompanies.add(company);
+            }
+        }
+
+        return filteredCompanies;
     }
 }

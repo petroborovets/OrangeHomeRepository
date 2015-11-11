@@ -29,7 +29,11 @@ public class UserServiceImpl implements UserService {
         userDAO.addElement(user);
     }
 
-    public void updateElement(User user) throws NonUniqueElementException {
+    public void addAllElements(List<User> element) throws NonUniqueElementException {
+        userDAO.addAllElements(element);
+    }
+
+    public void updateElement(User user) {
         userDAO.updateElement(user);
     }
 

@@ -22,8 +22,8 @@ public class Email {
     private String email;
     @Column(name = "URL", length = 500)
     private String url;
-    @OneToMany(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<EmailContext> emailContexts = new HashSet<EmailContext>();
+    @OneToOne(mappedBy = "email", cascade = CascadeType.ALL, orphanRemoval = true)
+    private EmailContext emailContext;
     @OneToOne
     @JoinColumn(name = "EMAIL_TYPE_FK", nullable = true)
     private EmailType emailType;
@@ -78,11 +78,15 @@ public class Email {
         this.emailType = emailType;
     }
 
-    public Set<EmailContext> getEmailContexts() {
-        return emailContexts;
+    public EmailContext getEmailContext() {
+        return emailContext;
     }
 
-    public void setEmailContexts(Set<EmailContext> emailContexts) {
-        this.emailContexts = emailContexts;
+    public void setEmailContext(EmailContext emailContext) {
+        this.emailContext = emailContext;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
     }
 }

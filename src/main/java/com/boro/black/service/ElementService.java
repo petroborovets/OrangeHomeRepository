@@ -10,7 +10,9 @@ import java.util.List;
 public interface ElementService<E> {
     void addElement(E element) throws NonUniqueElementException;
 
-    void updateElement(E element) throws NonUniqueElementException;
+    void addAllElements(List<E> element) throws NonUniqueElementException;
+
+    void updateElement(E element);
 
     List<E> getAllElements();
 
