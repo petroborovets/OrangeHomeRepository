@@ -12,7 +12,9 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -24,6 +26,7 @@ public class Crawler extends WebCrawler {
     public static final String taskMapKey = "task";
     public static final String emailServiceMapKey = "emailService";
     public static final String companyMapKey = "company";
+    public static final String crawlingTimeKey = "crawlingTime";
     private static final Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
             + "|png|tiff?|mid|mp2|mp3|mp4"
             + "|wav|avi|mov|mpeg|ram|m4v|pdf"
@@ -33,6 +36,7 @@ public class Crawler extends WebCrawler {
     private EmailService emailService;
     private SpiderTask task;
     private CrawlerUtil crawlerUtil;
+    private int crawlingTime;
 
     @Override
     public void onStart() {
@@ -44,6 +48,7 @@ public class Crawler extends WebCrawler {
             task = (SpiderTask) initDataMap.get(taskMapKey);
             emailService = (EmailService) initDataMap.get(emailServiceMapKey);
             company = (Company) initDataMap.get(companyMapKey);
+            crawlingTime = (Integer) initDataMap.get(crawlingTimeKey);
         }
     }
 
@@ -89,17 +94,22 @@ public class Crawler extends WebCrawler {
             System.out.println("Spider #" + getMyId() + " found [" + emailsOnPage.size() + "] email(s).");
 
             if (!emailsOnPage.isEmpty()) {
-                try {
-                    emailService.addAllElements(emailsOnPage);
-                } catch (NonUniqueElementException e) {
-                    System.out.println("Error, failed adding element list");
-                    e.printStackTrace();
+                for (Email email : emailsOnPage) {
+                    try {
+                        emailService.addElement(email);
+                    } catch (NonUniqueElementException e) {
+                        System.out.println("Warning, non unique element, " + email.getEmail());
+                    }
                 }
             }
-
-
         }
+        Date currentDate = new Date();
+        Date taskCreateDate = task.getCreateDate();
+        long minutesRunning = CrawlerUtil.compareTwoTimeStamps(new Timestamp(currentDate.getTime()),
+                new Timestamp(taskCreateDate.getTime()));
+        if (minutesRunning > crawlingTime) {
+            getMyController().shutdown();
+        }
+
     }
-
-
 }

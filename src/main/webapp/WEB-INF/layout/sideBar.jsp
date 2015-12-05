@@ -42,9 +42,15 @@
             <li class="header">MAIN NAVIGATION</li>
             <!-- Optionally, you can add icons to the links -->
             <li class="homePageLi"><a href="<c:url value="/" />"><span>Home</span></a><</li>
-            <li class="spiderPageLi"><a href="<c:url value="/spider" />"><span>Spider</span></a></li>
+            <li class="spiderPageLi">
+                <a href="#"><span>Spider</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li class="spiderStarterLi"><a href="<c:url value="/spider" />"><span>Starter</span></a></li>
+                    <li class="spiderTasksLi"><a href="<c:url value="/spiderTasks" />"><span>Tasks</span></a></li>
+                </ul>
+            </li>
             <li class="treeview">
-                <a href="#"><span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><span>Multilevel2</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a href="#">Link in level 2</a></li>
                     <li><a href="#">Link in level 2</a></li>

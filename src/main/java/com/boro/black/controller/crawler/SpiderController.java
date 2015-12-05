@@ -7,6 +7,8 @@ import com.boro.black.component.validation.GeneralValidation;
 import com.boro.black.dto.SpiderTaskDTO;
 import com.boro.black.entity.crawler.Company;
 import com.boro.black.entity.crawler.SpiderTask;
+import com.boro.black.exception.NonUniqueElementException;
+import com.boro.black.service.UserService;
 import com.boro.black.service.crawler.CompanyService;
 import com.boro.black.service.crawler.EmailService;
 import com.boro.black.service.crawler.SpiderTaskService;
@@ -19,13 +21,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +46,8 @@ public class SpiderController {
     EmailService emailService;
     @Autowired
     CrawlerUtil crawlerUtil;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/spider", method = RequestMethod.GET)
     public String home(ModelMap model) {
@@ -56,13 +58,19 @@ public class SpiderController {
     }
 
     @RequestMapping(value = "/spiderByURL", method = RequestMethod.POST)
-    public String startSpiderUsingUrl(@RequestParam("url") String url, @RequestParam("crawlingTime") String crawlingTimeSting, ModelMap model) {
+    public String startSpiderUsingUrl(@RequestParam("url") String url,
+                                      @RequestParam("taskName") String taskName,
+                                      @RequestParam("taskDescription") String taskDescription,
+                                      @RequestParam("crawlingTime") String crawlingTimeSting,
+                                      ModelMap model) {
         log.info("Starting spider using url: [" + url + "] for [" + crawlingTimeSting + "] minutes.");
         modelUtil.warp(model);
+
 
         int crawlingTime = Integer.parseInt(crawlingTimeSting);
         if (!GeneralValidation.validateURL(url)) {
             log.error("URL is not valid.");
+            model.addAttribute("errorMessage", "URL is not valid.");
         }
 
         // Configuring crawler
@@ -70,7 +78,6 @@ public class SpiderController {
         int numberOfCrawlers = 4;
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
-        config.setMaxPagesToFetch(200);
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
@@ -78,14 +85,24 @@ public class SpiderController {
         try {
             // Creating spider task
             SpiderTask spiderTask = new SpiderTask();
-            spiderTask.setName("Spider url [" + url + "]");
-            spiderTask.setDescription("Spider url [" + url + "]");
+            spiderTask.setUrl(url);
+            spiderTask.setName(taskName);
+            spiderTask.setDescription(taskDescription);
+            spiderTask.setUser(userService.getLoggedInUser());
+
             spiderTaskService.addElement(spiderTask);
             // Creating company
             Company company = new Company();
-            company.setSpiderTask(spiderTask);
+            List<SpiderTask> spiderTasks = new ArrayList<SpiderTask>();
+            spiderTasks.add(spiderTask);
+            company.setSpiderTasks(spiderTasks);
             company.setDomainUrl(crawlerUtil.getDomainFromUrl(url));
-            companyService.addElement(company);
+            try {
+                if (companyService.checkForUnique(company) != null)
+                    companyService.addElement(company);
+            } catch (NonUniqueElementException e) {
+                company = companyService.getCompanyByDomain(company.getDomainUrl());
+            }
 
             CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
 
@@ -93,13 +110,14 @@ public class SpiderController {
             crawlerInitDataMap.put(Crawler.taskMapKey, spiderTask);
             crawlerInitDataMap.put(Crawler.companyMapKey, company);
             crawlerInitDataMap.put(Crawler.emailServiceMapKey, emailService);
+            crawlerInitDataMap.put(Crawler.crawlingTimeKey, crawlingTime);
 
             controller.setCustomData(crawlerInitDataMap);
             controller.addSeed(url);
             controller.start(Crawler.class, numberOfCrawlers);
 
             if (controller.isFinished()) {
-                spiderTask.setFinishDate();
+                spiderTask.setProgress(SpiderTask.IS_FINISHED);
                 spiderTaskService.updateElement(spiderTask);
             }
 
@@ -107,20 +125,48 @@ public class SpiderController {
             /*
             List<Object> companies = controller.getCrawlersLocalData();
             */
+            log.info("Finished startSpiderUsingUrl()");
 
         } catch (Exception e) {
             log.error("Failed to start crawler: " + e);
             e.printStackTrace();
+            model.addAttribute("errorMessage", e.getLocalizedMessage());
         }
 
         return "spider";
+    }
+
+    @RequestMapping(value = "/spider/{id}", method = RequestMethod.GET)
+    public String getSpiderDetails(@PathVariable(value = "id") Long id, ModelMap model) {
+        log.info("Loading SpiderDetails.jsp");
+        modelUtil.warp(model);
+
+        SpiderTask spiderTask = spiderTaskService.getElementByID(id);
+        model.addAttribute("spiderTaskDTO", spiderTaskService.getDto(spiderTask));
+
+        return "spiderDetails";
+    }
+
+    @RequestMapping(value = "/spiderTasks", method = RequestMethod.GET)
+    public String getSpiderTasks(ModelMap model) {
+        log.info("Loading spiderTasks.jsp");
+        modelUtil.warp(model);
+
+        int companiesSavedCount = companyService.getAllElements().size();
+        int emailsSavedCount = emailService.getAllElements().size();
+        int numberOfTasks = spiderTaskService.getAllElements().size();
+
+        model.addAttribute("companiesSavedCount", companiesSavedCount);
+        model.addAttribute("emailsSavedCount", emailsSavedCount);
+        model.addAttribute("tasksCount", numberOfTasks);
+
+        return "spiderTasks";
     }
 
     @RequestMapping(value = "/spider/info", method = RequestMethod.GET)
     public
     @ResponseBody
     ArrayList<SpiderTaskDTO> getJsonTableData(ModelMap model) {
-
         return spiderTaskService.getDtoList(spiderTaskService.getAllElements());
     }
 }

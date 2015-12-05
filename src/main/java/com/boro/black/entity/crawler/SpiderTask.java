@@ -1,5 +1,7 @@
 package com.boro.black.entity.crawler;
 
+import com.boro.black.entity.User;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -9,13 +11,18 @@ import java.util.*;
 @Entity
 @Table(name = "SPIDER_TASKS")
 public class SpiderTask {
-    public static int IS_RUNNING = 1;
-    public static int IS_FINISHED = 2;
+    public static short IS_RUNNING = 1;
+    public static short IS_FINISHED = 2;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "NAME", nullable = false, length = 200)
+    @ManyToOne
+    @JoinColumn(name = "USER_FK", nullable = false)
+    private User user;
+    @Column(name = "URL", nullable = false, length = 500)
+    private String url;
+    @Column(name = "NAME", nullable = false, length = 500)
     private String name;
     @Column(name = "DESCRIPTION", nullable = true, length = 300)
     private String description;
@@ -82,5 +89,21 @@ public class SpiderTask {
 
     public void setFinishDate() {
         this.finishDate = new Date();
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

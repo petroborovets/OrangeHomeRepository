@@ -26,9 +26,11 @@
         <module name="OrangeHome" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="BlackWidow" target="1.5" />
-      <module name="OrangeHome" target="1.5" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="BlackWidow" target="1.7" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="GENERATE_NO_WARNINGS" value="true" />
   </component>
 </project>

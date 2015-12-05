@@ -7,6 +7,8 @@
         <mapping class="com.boro.black.entity.User"/>
         <mapping class="com.boro.black.entity.SecurityRole"/>
         <mapping class="com.boro.black.entity.crawler.Email"/>
+        <mapping class="com.boro.black.entity.crawler.EmailUserTemplate"/>
+        <mapping class="com.boro.black.entity.crawler.CrawlerUserConfig"/>
         <mapping class="com.boro.black.entity.crawler.Company"/>
         <mapping class="com.boro.black.entity.crawler.EmailType"/>
         <mapping class="com.boro.black.entity.crawler.EmailContext"/>

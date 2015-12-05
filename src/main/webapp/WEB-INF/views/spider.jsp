@@ -20,7 +20,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href='<c:url value="/" />'><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Spider</li>
+            <li class="active">Start spider</li>
         </ol>
         <c:if test="${not empty successMessage}">
             <div class="alert alert-success">
@@ -52,98 +52,110 @@
                     <ul class="nav nav-tabs">
                         <li class="active">
                             <a href="#tab_1" data-toggle="tab">
-                                <i style="color:#5cb85c" class="fa fa-terminal"></i> By Company URL</a>
+                                <i style="color:#5cb85c" class="fa fa-terminal"></i> New task</a>
                         </li>
                         <li>
                             <a href="#tab_2" data-toggle="tab">
-                                <i style="color:#f0ad4e" class="fa fa-list"></i> By Existing companies</a>
+                                <i style="color:#f0ad4e" class="fa fa-list"></i> Run again</a>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <!-- /.tab-pane -->
                         <div class="tab-pane active" id="tab_1">
-                            <div>
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label>Company URL <span class="text-red">*</span></label>
-                                        <input type="companyURL" class="form-control" id="companyURL"
-                                               placeholder="Enter company URL">
+                            <form:form action="/spiderByURL" method="post">
+                                <div>
+                                    <div class="box-body">
                                         <div class="form-group">
-                                            <label>Select crawling time</label>
-                                            <select id="crawlingTime" class="form-control">
-                                                <option value="20">Quick (20 min)</option>
-                                                <option value="60">Normal (Hour)</option>
-                                                <option value="300">High quality (5 hours)</option>
-                                            </select>
+                                            <label>URL <span class="text-red">*</span></label>
+                                            <input type="url" name="url" class="form-control" id="companyURL"
+                                                   placeholder="Enter URL to crawl">
+                                            <label>Name <span class="text-red">*</span></label>
+                                            <input type="text" name="taskName" class="form-control" id="taskName"
+                                                   placeholder="Enter task name">
+                                            <label>Description <span class="text-red">*</span></label>
+                                            <input type="text" name="taskDescription" class="form-control" id="taskDescription"
+                                                   placeholder="Enter task description">
+                                            <div class="form-group">
+                                                <label>Select crawling time</label>
+                                                <select id="crawlingTime" name="crawlingTime" class="form-control">
+                                                    <option value="20">Quick (20 min)</option>
+                                                    <option value="60">Normal (Hour)</option>
+                                                    <option value="300">High quality (5 hours)</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- /.box-body -->
+                                    <!-- /.box-body -->
 
-                                <div class="box-footer">
-                                    <button id="startSpiderByCompanyURL" class="btn btn-primary">Submit</button>
-                                    <span id="spanWrongURL" class="text-red"
-                                          style="display: none"> URL is not valid.</span>
+                                    <div class="box-footer">
+                                        <button id="startSpiderByCompanyURL" class="btn btn-primary">Submit</button>
+                                        <span id="spanWrongURL" class="text-red"
+                                              style="display: none"> URL is not valid.</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </form:form>
+                        </div>
+                        <div class="tab-pane" id="tab_2">
+                            Coming soon...
                         </div>
                     </div>
                     <!-- /.tab-content -->
                 </div>
             </div>
             <div class="col-md-7">
-                <table id="entityTable" data-toggle="table" data-pagination="true"
-                       data-id-field="id" data-show-refresh="true" data-sort-order="desc" data-sort-name="createDate"
-                       data-page-list="[10, 20, 50, 100, 1000]"
-                       data-url="<spring:url value="${contextPath}/spider/info"/>">
-                    <thead>
-                    <tr>
-                        <th data-width="10" data-field="id" data-sortable="true">#</th>
-                        <th data-width="10" data-field="name" data-switchable="false"
-                            data-sortable="true">Task name
-                        </th>
-                        <th data-width="10" data-field="numberOfEmails" data-sortable="true">Emails found</th>
-                        <th data-width="10" data-field="progress" data-sortable="true">Progress</th>
-                        <th data-field="startDate" data-sortable="true">Time started</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Recent tasks</h3>
+
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="entityTable" data-toggle="table" data-pagination="true"
+                               data-id-field="id" data-show-refresh="true" data-sort-order="desc"
+                               data-sort-name="createDate"
+                               data-page-list="[10, 20, 50, 100, 1000]" data-search="true" toolbarAlign="left"
+                               data-url="<spring:url value="${contextPath}/spider/info"/>">
+                            <thead>
+                            <tr>
+                                <th data-width="10" data-field="id" data-sortable="true">#</th>
+                                <th data-width="10" data-field="name" data-switchable="false"
+                                    data-sortable="true">Task name
+                                </th>
+                                <th data-width="10" data-field="numberOfEmails" data-sortable="true">Emails found</th>
+                                <th data-width="10" data-field="progress" data-sortable="true">Progress</th>
+                                <th data-field="startDate" data-sortable="true">Time started</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
             </div>
         </div>
     </section>
 </div>
-<spring:url value="/spiderByURL" var="ajaxURL"/>
+
+<spring:url value="/spider/" var="spiderDetails"/>
 <!-- Activate sidebar tab -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.spiderPageLi').addClass('active');
+        $('.spiderStarterLi').addClass('active');
+        // Fires when user click a row
+        $('#entityTable').on('click-row.bs.table', function (e, row, $element) {
+            var spiderTaskId = row.id;
+            var spiderDetPageUrl = "${spiderDetails}";
+            window.location.href = spiderDetPageUrl + spiderTaskId;
+        });
     });
-    $("#startSpiderByCompanyURL").bind("click", function () {
-        var companyURL = $("#companyURL").val();
-        var crawlingTime = $( "#crawlingTime" ).val();
-        if (isValidURL(companyURL)) {
-            var ajaxUrl = "${ajaxURL}";
-            $.ajax({
-                type: 'POST',
-                url: ajaxUrl,
-                data: {
-                    'url': companyURL,
-                    'crawlingTime' : crawlingTime
-                }
-            });
-            setTimeout(function (){
-                alert("YES");
-                $('button[name="refresh"]').click()
-            }, 5000);
-        } else {
-            $("#spanWrongURL").show();
-        }
-    });
-    function isValidURL(textval) {
-        var urlregex = new RegExp(
-                "^(http|https|ftp)\://([a-zA-Zа-яА-Я0-9\.\-]+(\:[a-zA-Zа-яА-Я0-9\.&amp;%\$\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Zа-яА-Я0-9\-]+\.)*[a-zA-Zа-яА-Я0-9\-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Zа-яА-Я]{2}))(\:[0-9]+)*(/($|[a-zA-Zа-яА-Я0-9\.\,\?\'\\\+&amp;%\$#\=~_\-]+))*$");
-        return urlregex.test(textval);
-    }
+
 </script>
+
+
+

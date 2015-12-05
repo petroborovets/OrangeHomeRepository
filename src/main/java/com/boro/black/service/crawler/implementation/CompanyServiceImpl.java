@@ -55,6 +55,10 @@ public class CompanyServiceImpl implements CompanyService {
         return null;
     }
 
+    public Company checkForUnique(Company company) throws NonUniqueElementException {
+        return companyDAO.checkForUnique(company, companyDAO.getSession());
+    }
+
     public Company getElementByID(Long elementId) {
         return companyDAO.getElementByID(elementId);
     }
@@ -66,11 +70,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     public List<Email> getCompanyEmails(Long companyPk) {
         log.info("Get company with pk [" + companyPk + "] emails.");
-        CompanyDAO companyDAOImpl = (CompanyDAO) companyDAO;
-        companyDAOImpl.getCompanyEmails(companyPk);
-
-        log.error("Failed to get company emails.");
-        return null;
+        return companyDAO.getCompanyEmails(companyPk);
+    }
+    
+    public List<Company> getCompaniesByTask(Long taskId) {
+        log.info("Get companies with task pk [" + taskId + "]");
+        return companyDAO.getCompaniesByTaskId(taskId);
     }
 
     public List<Company> filterCompanies(List<Company> companies) {
@@ -122,4 +127,5 @@ public class CompanyServiceImpl implements CompanyService {
 
         return filteredCompanies;
     }
+
 }

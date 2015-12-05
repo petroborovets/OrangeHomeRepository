@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface SpiderTaskService extends ElementService<SpiderTask> {
     ArrayList<SpiderTaskDTO> getDtoList(List<SpiderTask> spiderTasks);
+    SpiderTaskDTO getDto(SpiderTask spiderTask);
 }

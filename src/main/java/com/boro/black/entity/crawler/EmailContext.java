@@ -16,9 +16,6 @@ public class EmailContext {
     private String leftContext;
     @Column(name = "RIGHT_CONTEXT", length = 300)
     private String rightContext;
-    @OneToOne
-    @JoinColumn(name = "EMAIL_FK", nullable = false)
-    private Email email;
 
     public Long getId() {
         return id;
@@ -44,11 +41,4 @@ public class EmailContext {
         this.rightContext = rightContext;
     }
 
-    public Email getEmail() {
-        return email;
-    }
-
-    public void setEmail(Email email) {
-        this.email = email;
-    }
 }

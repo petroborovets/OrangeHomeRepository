@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="772407038">
+  <component name="DataSourceManagerImpl" format="xml" hash="3503671586">
     <data-source source="LOCAL" name="OrangeHome MySQL" uuid="a35220d7-66a3-4bea-8ac5-1dbe2c75a585">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/OrangeHome</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3307/OrangeHome</jdbc-url>
       <driver-properties>
         <property name="zeroDateTimeBehavior" value="convertToNull" />
         <property name="tinyInt1isBit" value="false" />

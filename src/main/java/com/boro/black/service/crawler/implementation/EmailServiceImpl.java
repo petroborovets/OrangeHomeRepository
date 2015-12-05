@@ -1,16 +1,20 @@
 package com.boro.black.service.crawler.implementation;
 
 import com.boro.black.dao.ElementDAO;
+import com.boro.black.dto.EmailDTO;
 import com.boro.black.entity.crawler.Company;
 import com.boro.black.entity.crawler.Email;
 import com.boro.black.entity.crawler.EmailContext;
+import com.boro.black.entity.crawler.SpiderTask;
 import com.boro.black.exception.NonUniqueElementException;
 import com.boro.black.service.crawler.EmailService;
+import com.boro.black.service.crawler.SpiderTaskService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +32,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private ElementDAO<Email> emailDAO;
+
+    @Autowired
+    private SpiderTaskService spiderTaskService;
 
     public void addElement(Email email) throws NonUniqueElementException {
         emailDAO.addElement(email);
@@ -48,6 +55,7 @@ public class EmailServiceImpl implements EmailService {
     public void deleteElement(Email email) {
         emailDAO.deleteElement(email);
     }
+
     //TODO implement
     public List<Email> getElementsByCriteria(Object... criteria) {
         return null;
@@ -94,11 +102,8 @@ public class EmailServiceImpl implements EmailService {
             matcher = pattern.matcher(pageText);
 
             while (matcher.find()) {
-                EmailContext emailContext = new EmailContext();
-                emailContext.setLeftContext(matcher.group(1));
-                emailContext.setRightContext(matcher.group(2));
-
-                emailEntity.setEmailContext(emailContext);
+                emailEntity.setLeftContext(matcher.group(1));
+                emailEntity.setRightContext(matcher.group(2));
             }
         }
 
@@ -107,6 +112,7 @@ public class EmailServiceImpl implements EmailService {
 
     /**
      * Filter grouped emails
+     *
      * @param groupedEmails list of not unique emails
      * @return List of unique emails
      */
@@ -133,5 +139,39 @@ public class EmailServiceImpl implements EmailService {
         }
 
         return uniqueEmails;
+    }
+
+    public List<Email> getEmailsByTaskId(Long taskId) {
+        List<Email> taskEmails = new ArrayList<Email>();
+
+        SpiderTask spiderTask = spiderTaskService.getElementByID(taskId);
+
+
+        return taskEmails;
+    }
+
+    public EmailDTO getDTO(Email email) {
+        EmailDTO emailDTO = new EmailDTO();
+
+        emailDTO.setId(email.getId());
+        emailDTO.setEmail(email.getEmail());
+        emailDTO.setUrl(email.getUrl());
+
+        emailDTO.setCompany(email.getCompany().getDomainUrl());
+        emailDTO.setCreateDate(email.getCreateDate().toString());
+        emailDTO.setLeftContext(email.getLeftContext());
+        emailDTO.setRightContext(email.getRightContext());
+
+        return emailDTO;
+    }
+
+    public List<EmailDTO> getDTOs(List<Email> emails) {
+        List<EmailDTO> emailDTOs = new ArrayList<EmailDTO>();
+
+        for (Email email : emails) {
+            emailDTOs.add(getDTO(email));
+        }
+
+        return emailDTOs;
     }
 }

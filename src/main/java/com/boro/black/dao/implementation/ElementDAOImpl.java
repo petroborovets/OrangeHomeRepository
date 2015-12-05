@@ -30,7 +30,6 @@ public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
 
     public void addAllElements(List<E> elements) throws NonUniqueElementException {
         Session session = sessionFactory.getCurrentSession();
-        Transaction tx = session.beginTransaction();
         for (E element : elements) {
             try {
                 checkForUnique(element, session);
@@ -40,7 +39,6 @@ public abstract class ElementDAOImpl<E> implements ElementDAO<E> {
             }
             session.save(element);
         }
-        tx.commit();
         session.close();
     }
 

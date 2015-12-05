@@ -6,9 +6,15 @@ package com.boro.black.dto;
 public class SpiderTaskDTO {
     long id;
     String name;
-    short progress;
+    String description;
+    String spiderUrl;
+    String progress;
     String startDate;
+    String startTime;
+    String finishDate;
+    String finishTime;
     int numberOfEmails;
+    int numberOfCompanies;
 
     public long getId() {
         return id;
@@ -26,11 +32,27 @@ public class SpiderTaskDTO {
         this.name = name;
     }
 
-    public short getProgress() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSpiderUrl() {
+        return spiderUrl;
+    }
+
+    public void setSpiderUrl(String spiderUrl) {
+        this.spiderUrl = spiderUrl;
+    }
+
+    public String getProgress() {
         return progress;
     }
 
-    public void setProgress(short progress) {
+    public void setProgress(String progress) {
         this.progress = progress;
     }
 
@@ -48,5 +70,37 @@ public class SpiderTaskDTO {
 
     public void setNumberOfEmails(int numberOfEmails) {
         this.numberOfEmails = numberOfEmails;
+    }
+
+    public void setNumberOfCompanies(int numberOfCompanies) {
+        this.numberOfCompanies = numberOfCompanies;
+    }
+
+    public int getNumberOfCompanies() {
+        return numberOfCompanies;
+    }
+
+    public void setFinishDate(String finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public String getFinishDate() {
+        return finishDate;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
     }
 }

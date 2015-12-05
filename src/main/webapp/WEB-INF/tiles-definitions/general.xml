@@ -46,4 +46,14 @@
         <put-attribute name="body" value="/WEB-INF/views/spider.jsp"/>
     </definition>
 
+    <definition name="spiderTasks" extends="common">
+        <put-attribute name="title" value="Spider tasks" />
+        <put-attribute name="body" value="/WEB-INF/views/spiderTasks.jsp"/>
+    </definition>
+
+    <definition name="spiderDetails" extends="common">
+        <put-attribute name="title" value="Spider details" />
+        <put-attribute name="body" value="/WEB-INF/views/spiderDetails.jsp"/>
+    </definition>
+
 </tiles-definitions>

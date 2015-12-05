@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
   <data-source name="OrangeHome MySQL" uuid="a35220d7-66a3-4bea-8ac5-1dbe2c75a585">
-    <database-info product="MySQL" version="5.6.16" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+    <database-info product="MySQL" version="5.6.26" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
@@ -10,36 +10,46 @@
     <table name="COMPANIES" schema="" catalog="OrangeHome" type="TABLE">
       <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
       <column name="DOMAIN_URL" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="SPIDER_TASK_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <primary-key name="PRIMARY" columns="ID"/>
-      <foreign-key name="FK_9j0jguu6dor4u6fjxk38cysp3" columns="SPIDER_TASK_FK" ref-table="SPIDER_TASKS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_laxdscufpm8ne32tu7ebu7kt5" table="COMPANIES_SPIDER_TASKS" schema="" catalog="OrangeHome" columns="COMPANIES_ID"/>
       <exported-key name="FK_88uu73eu3j7rqdpxsb2x6sfmq" table="EMAILS" schema="" catalog="OrangeHome" columns="COMPANY_FK"/>
       <index name="UK_s83bxkl0pxl2elkb0jpyyrsil" unique="true" columns="DOMAIN_URL"/>
-      <index name="FK_9j0jguu6dor4u6fjxk38cysp3" unique="false" columns="SPIDER_TASK_FK"/>
+    </table>
+    <table name="COMPANIES_SPIDER_TASKS" schema="" catalog="OrangeHome" type="TABLE">
+      <column name="COMPANIES_ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="spiderTasks_ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <foreign-key name="FK_2gvoaqx0sfh8wy9546i28u8o2" columns="spiderTasks_ID" ref-table="SPIDER_TASKS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_laxdscufpm8ne32tu7ebu7kt5" columns="COMPANIES_ID" ref-table="COMPANIES" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_2gvoaqx0sfh8wy9546i28u8o2" unique="false" columns="spiderTasks_ID"/>
+      <index name="FK_laxdscufpm8ne32tu7ebu7kt5" unique="false" columns="COMPANIES_ID"/>
+    </table>
+    <table name="CRAWLER_USER_CONFIG" schema="" catalog="OrangeHome" type="TABLE">
+      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="FOLLOW_REDIRECTS" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="MAX_DEPTH_OF_CRAWLING" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="MAX_PAGES_TO_FETCH" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="NUMBER_OF_THREADS" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="POLITENESS_DELAY" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="USER_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_f1w162p90srtwhnxag1ea1v0s" columns="USER_FK" ref-table="USERS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_f1w162p90srtwhnxag1ea1v0s" unique="false" columns="USER_FK"/>
     </table>
     <table name="EMAILS" schema="" catalog="OrangeHome" type="TABLE">
       <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="CREATE_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="EMAIL" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="LEFT_CONTEXT" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="RIGHT_CONTEXT" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="URL" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="COMPANY_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="EMAIL_TYPE_FK" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
-      <column name="CREATE_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="ID"/>
       <foreign-key name="FK_88uu73eu3j7rqdpxsb2x6sfmq" columns="COMPANY_FK" ref-table="COMPANIES" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="FK_g5cpwtffflw1wu2rb8vm66q1f" columns="EMAIL_TYPE_FK" ref-table="EMAIL_TYPE" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="FK_ebvmxnoxhncodybb9h35h4f1b" table="EMAIL_CONTEXT" schema="" catalog="OrangeHome" columns="EMAIL_FK"/>
       <index name="UK_f51tah4rf6itsrow0lx4auv03" unique="true" columns="EMAIL"/>
       <index name="FK_88uu73eu3j7rqdpxsb2x6sfmq" unique="false" columns="COMPANY_FK"/>
       <index name="FK_g5cpwtffflw1wu2rb8vm66q1f" unique="false" columns="EMAIL_TYPE_FK"/>
-    </table>
-    <table name="EMAIL_CONTEXT" schema="" catalog="OrangeHome" type="TABLE">
-      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
-      <column name="LEFT_CONTEXT" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
-      <column name="RIGHT_CONTEXT" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
-      <column name="EMAIL_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
-      <primary-key name="PRIMARY" columns="ID"/>
-      <foreign-key name="FK_ebvmxnoxhncodybb9h35h4f1b" columns="EMAIL_FK" ref-table="EMAILS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="FK_ebvmxnoxhncodybb9h35h4f1b" unique="false" columns="EMAIL_FK"/>
     </table>
     <table name="EMAIL_TYPE" schema="" catalog="OrangeHome" type="TABLE">
       <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
@@ -54,6 +64,16 @@
       <primary-key name="PRIMARY" columns="ID"/>
       <exported-key name="FK_g5cpwtffflw1wu2rb8vm66q1f" table="EMAILS" schema="" catalog="OrangeHome" columns="EMAIL_TYPE_FK"/>
     </table>
+    <table name="EMAIL_USER_TEMPLATE" schema="" catalog="OrangeHome" type="TABLE">
+      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="CONTENT" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="CV_URL" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="SUBJECT" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="USER_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <foreign-key name="FK_286udel0lu2xhdqt9ym06jdcq" columns="USER_FK" ref-table="USERS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_286udel0lu2xhdqt9ym06jdcq" unique="false" columns="USER_FK"/>
+    </table>
     <table name="GISMETEO_DATA" schema="" catalog="OrangeHome" type="TABLE">
       <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
       <column name="CREATE_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
@@ -61,7 +81,7 @@
       <column name="PRESSURE" sqlType="VARCHAR" precision="4" scale="0" nullable="false" jdbcType="12"/>
       <column name="TEMPERATURE" sqlType="VARCHAR" precision="3" scale="0" nullable="false" jdbcType="12"/>
       <column name="WATER_TEMPERATURE" sqlType="VARCHAR" precision="4" scale="0" nullable="false" jdbcType="12"/>
-      <column name="WEATHER_IMAGE_URL" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="WEATHER_IMAGE_URL" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
       <column name="WIND_SPEED" sqlType="VARCHAR" precision="3" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
     </table>
@@ -76,10 +96,14 @@
       <column name="CREATE_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="DESCRIPTION" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <column name="FINISH_DATE" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
-      <column name="NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <column name="PROGRESS" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="NAME" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="PROGRESS" sqlType="SMALLINT" precision="5" scale="0" nullable="false" jdbcType="5"/>
+      <column name="URL" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="USER_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <primary-key name="PRIMARY" columns="ID"/>
-      <exported-key name="FK_9j0jguu6dor4u6fjxk38cysp3" table="COMPANIES" schema="" catalog="OrangeHome" columns="SPIDER_TASK_FK"/>
+      <foreign-key name="FK_s673cjh78tckb9llqupmpele3" columns="USER_FK" ref-table="USERS" ref-schema="" ref-catalog="OrangeHome" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK_2gvoaqx0sfh8wy9546i28u8o2" table="COMPANIES_SPIDER_TASKS" schema="" catalog="OrangeHome" columns="spiderTasks_ID"/>
+      <index name="FK_s673cjh78tckb9llqupmpele3" unique="false" columns="USER_FK"/>
     </table>
     <table name="USER2SECURITY_ROLES" schema="" catalog="OrangeHome" type="TABLE">
       <column name="USER_FK" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
@@ -97,6 +121,9 @@
       <column name="LAST_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="PASSWORD" sqlType="VARCHAR" precision="60" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
+      <exported-key name="FK_f1w162p90srtwhnxag1ea1v0s" table="CRAWLER_USER_CONFIG" schema="" catalog="OrangeHome" columns="USER_FK"/>
+      <exported-key name="FK_286udel0lu2xhdqt9ym06jdcq" table="EMAIL_USER_TEMPLATE" schema="" catalog="OrangeHome" columns="USER_FK"/>
+      <exported-key name="FK_s673cjh78tckb9llqupmpele3" table="SPIDER_TASKS" schema="" catalog="OrangeHome" columns="USER_FK"/>
       <exported-key name="FK_i0gi36sodd0iwgcxjktd42q8" table="USER2SECURITY_ROLES" schema="" catalog="OrangeHome" columns="USER_FK"/>
       <index name="UK_81nqioeq3njjrwqaltk2mcobj" unique="true" columns="EMAIL"/>
     </table>

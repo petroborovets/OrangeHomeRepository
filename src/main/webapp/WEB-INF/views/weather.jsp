@@ -45,25 +45,15 @@
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <p>Temperature</p>
-
                         <h3><c:out value="${weather.temperature}"/> °c</h3>
-
                         <p>Wind speed</p>
-
                         <h3><i class="fa fa-location-arrow"> <c:out value="${weather.windSpeed}"/></i></h3>
-
                         <p>Humidity</p>
-
                         <h3><i class="fa fa-tint"></i> <c:out value="${weather.humidity}"/> %</h3>
-
                         <p>Pressure</p>
-
                         <h3><c:out value="${weather.pressure}"/> <i class="fa fa-line-chart"></i></h3>
-
                         <p>Water temperature</p>
-
                         <h3><i class="fa fa-tint"></i> <c:out value="${weather.waterTemperature}"/> °c</h3>
-
                     </div>
                     <div class="icon">
                         <img src='<c:out value="http://${weather.weatherImageUrl}"/>' width="100" height="100">
@@ -113,7 +103,6 @@
                 <!-- /.box -->
             </div>
         </div>
-
     </section>
 </div>
 

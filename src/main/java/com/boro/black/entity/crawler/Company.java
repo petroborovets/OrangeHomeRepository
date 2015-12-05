@@ -15,9 +15,9 @@ public class Company {
     private Long id;
     @Column(name = "DOMAIN_URL", unique = true, nullable = false, length = 50)
     private String domainUrl;
-    @ManyToOne
+    @ManyToMany
     @JoinColumn(name = "SPIDER_TASK_FK", nullable = false)
-    private SpiderTask spiderTask;
+    private List<SpiderTask> spiderTasks;
     @OneToMany(mappedBy = "company")
     private List<Email> emails;
 
@@ -48,11 +48,11 @@ public class Company {
         }
     }
 
-    public SpiderTask getSpiderTask() {
-        return spiderTask;
+    public List<SpiderTask> getSpiderTasks() {
+        return spiderTasks;
     }
 
-    public void setSpiderTask(SpiderTask spiderTask) {
-        this.spiderTask = spiderTask;
+    public void setSpiderTasks(List<SpiderTask> spiderTasks) {
+        this.spiderTasks = spiderTasks;
     }
 }

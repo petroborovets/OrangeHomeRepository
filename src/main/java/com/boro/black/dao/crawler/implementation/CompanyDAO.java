@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
 public class CompanyDAO extends ElementDAOImpl<Company> {
     static Logger log = Logger.getLogger(CompanyDAO.class.getName());
     public static final String getCompanyByDomainQuery = "FROM Company WHERE domainUrl = :domain_url";
-    public static final String getCompanyByTaskQuery = "FROM Company WHERE spiderTask = :spider_task";
+    public static final String getCompanyByTaskQuery = "SELECT c FROM Company c JOIN c.spiderTasks s WHERE s = :spider_task";
 
 
     public CompanyDAO() {
@@ -60,6 +61,23 @@ public class CompanyDAO extends ElementDAOImpl<Company> {
         return companyEmails;
     }
 
+    public List<Company> getCompaniesByTaskId(Long taskId) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createQuery("SELECT c FROM Company c JOIN c.spiderTasks s WHERE s.id = :taskId");
+        query.setParameter("taskId", taskId);
+        List<Company> taskCompanies = query.list();
+
+        if (taskCompanies == null) {
+            log.error("Failed to get taskCompanies using task pk:[" + taskId + "]");
+        } else if (taskCompanies.size() == 0) {
+            log.warn("No companies found for task with pk:[" + taskId + "]");
+        }
+
+        return taskCompanies;
+    }
+
     public Company getCompanyByDomainUrl(String domainUrl) {
         Company company = null;
 
@@ -78,8 +96,18 @@ public class CompanyDAO extends ElementDAOImpl<Company> {
         Query query = sessionFactory.getCurrentSession().createQuery(getCompanyByTaskQuery);
         query.setParameter("spider_task", spiderTask);
 
-        List<Company> list = query.list();
+        List<Company> companyTasklist = query.list();
 
-        return list;
+        if (companyTasklist == null) {
+            log.error("Failed to get taskCompanies using task pk:[" + spiderTask.getId() + "]");
+        } else if (companyTasklist.size() == 0) {
+            log.warn("No companies found for task with pk:[" + spiderTask.getId() + "]");
+        }
+
+        return companyTasklist;
+    }
+
+    public Session getSession() {
+        return sessionFactory.getCurrentSession();
     }
 }
